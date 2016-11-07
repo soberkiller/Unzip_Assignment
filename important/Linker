@@ -1,0 +1,14 @@
+#Set variables
+QUAZIPCODEIR = "/Users/fangmingzhao/course/C++ for programming/L/quazip-0.7.2/quazip"
+ZLIBCODEDIR = "/Users/fangmingzhao/course/C++ for programming/L/zlib-1.2.8"
+
+#include the compiled code
+unix {
+    LIBS += -L$${ZLIBCODEDIR} -lz
+}
+#include files
+
+INCLUDEPATH += $${QUAZIPCODEIR}
+HEADERS += $${QUAZIPCODEIR}/*.h
+SOURCES += $${QUAZIPCODEIR}/*.cpp
+SOURCES += $${QUAZIPCODEIR}/*.c
