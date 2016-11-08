@@ -13,9 +13,9 @@ void Assignment_Unzip::A_Check_file(int &f_c_flag, int &f_q_flag, const char *F_
     const char *zipfilename=NULL;
 
     zipfilename = m_F_Orname;               // pass file name
-/*    void Compress_Dir(QString Zipfile, QString Directory)
-    {
-        if(JlCompress::compressDir(zipfilename, m_F_Dir_Old))
+
+
+/*        if(JlCompress::compressDir(zipfilename, m_F_Dir_Old))
         {
             qDebug() << "Created:" << zipfilename;
 
@@ -24,15 +24,11 @@ void Assignment_Unzip::A_Check_file(int &f_c_flag, int &f_q_flag, const char *F_
         {
             qDebug() << "Could not created:" << zipfilename;
         }
-//    }
+
 */
-    void Decompress_Dir(QString Zipfile, QString NewDirectory)
-    {
-        QStringList F_List = JlCompress::extractDir(Zipfile,NewDirectory);
-    }
+        QStringList F_List = JlCompress::extractDir(zipfilename, m_F_Dir_New);      // here is suppose to have a flag to indicate whether unzipping a file is finished or ok.
 
 }
-
 
 void Assignment_Unzip::A_Send_mail(int f_c_flag, int f_q_flag, const char *s_mailaddress){
 
