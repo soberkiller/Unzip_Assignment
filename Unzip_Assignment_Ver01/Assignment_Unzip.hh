@@ -89,8 +89,24 @@ private:
     const char *m_current_dir;
     double m_Stu_ID;
 public:                                         // there are two methods;
-    Assignment_Unzip(int S_Index, const char *F_Orname, const char *F_Exname, const char *F_Dir_Origin, const char *F_Dir_New, const char *current_dir);  // reload your weapon ready to shoot
-    Assignment_Unzip(int S_Index, int file_name_valid, int file_zip_valid, double Stu_ID, const char *F_Dir_Origin, const char *current_dir);
+/*    Assignment_Unzip(int Stu_Index, const char *F_Orname,
+    const char *F_Exname, const char *F_Dir_Origin,
+const char *F_Dir_New, const char *current_dir);  // reload your weapon ready to shoot*/
+
+/* Using Stu_Index and Stu_ID to name the directory of each submited assignment;
+ * file_name_valid indicates whether submitted file name follows rule, 1 is valid;
+ * file_zip_valid indicates whether submitted zipfile can be unzipped, 1 is valid;
+ * F_Dir_Origin is where download group put submitted assignment;
+ * current_dir is where progame stay;
+*/
+
+    Assignment_Unzip(int Stu_Index, int file_name_valid,
+                     int file_zip_valid, double Stu_ID,
+                     const char *F_Dir_Origin, const char *current_dir);
+
+
+
+
     void A_Check_file(int &file_name_valid, int &m_file_zip_valid, const char *F_Dir_New);                              // check the file to see whether its name follows the rule and can or not be complied if file name is qualified
     void A_Send_mail(int f_c_flag, int f_q_flag, char const *s_mailaddress);      // notify student whose submitted assigment is not qualified
 };

@@ -5,11 +5,11 @@
 
 using namespace std;
 
-Assignment_Unzip::Assignment_Unzip(int S_Index, const char *F_Orname, const char *F_Exname, const char *F_Dir_Origin, const char *F_Dir_New, const char *current_dir): m_Stu_Index(S_Index), m_F_Orname(F_Orname), m_F_Exname(F_Exname), m_F_Dir_Origin(F_Dir_Origin), m_F_Dir_New(F_Dir_New), m_current_dir(current_dir){
+Assignment_Unzip::Assignment_Unzip(int Stu_Index, const char *F_Orname, const char *F_Exname, const char *F_Dir_Origin, const char *F_Dir_New, const char *current_dir): m_Stu_Index(S_Index), m_F_Orname(F_Orname), m_F_Exname(F_Exname), m_F_Dir_Origin(F_Dir_Origin), m_F_Dir_New(F_Dir_New), m_current_dir(current_dir){
 /*----------------  ---------------------*/
 
 }
-Assignment_Unzip::Assignment_Unzip(int S_Index, int file_name_valid, int file_zip_valid, double Stu_ID, const char *F_Dir_Origin, const char *current_dir){
+Assignment_Unzip::Assignment_Unzip(int Stu_Index, int file_name_valid, int file_zip_valid, double Stu_ID, const char *F_Dir_Origin, const char *current_dir){
 /*----------------  ---------------------*/
 }
 
