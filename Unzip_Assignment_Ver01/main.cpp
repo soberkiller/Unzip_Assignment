@@ -3,8 +3,12 @@
 #include <iostream>
 #include <string>
 #include <Assignment_Unzip.hh>
+#include <mach-o/dyld.h>
 
 using namespace std;
+
+
+
 
 int main(){
     int HOWMANY_STU = 15;
@@ -45,10 +49,19 @@ int main(){
     cout.precision(10);
     cout << stu[13].S_info.Stu_Index;
 //-------------------------------------------------
+// get current directory and store it in current_pro_dir
+    uint32_t dir_buf_size = sizeof(current_pro_dir);
+
+    if (_NSGetExecutablePath(current_pro_dir, &dir_buf_size) == 0)
+        printf("executable path is %s\n", current_pro_dir);
+    else
+        printf("buffer too small; need size %u\n", dir_buf_size);
 
    // for(int i=HOWMANY_STU-1; i>=0; i--){
     int i = 1;
-        Assignment_Unzip a(stu[i].S_info.Stu_Index, stu[i].F_info.File_Orname, stu[i].F_info.File_Extname, stu[i].F_info.File_dir_Origin, stu[i].F_info.File_dir_N);  // reload your weapon ready to shoot
+        Assignment_Unzip a(stu[i].S_info.Stu_Index, stu[i].F_info.file_name_valid,
+                           stu[i].F_info.file_zip_valid, stu[i].S_info.Stu_ID,
+                           stu[i].F_info.File_dir_Origin, current_pro_dir);  // reload your weapon ready to shoot
 
         a.A_Check_file(stu[i].F_info.Q_flag, stu[i].F_info.C_flag, stu[i].F_info.File_Extname);       // figure out whether file student submit follow name rule or can be complied
 

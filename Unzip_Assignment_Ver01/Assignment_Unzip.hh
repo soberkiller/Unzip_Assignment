@@ -7,6 +7,7 @@
 #include <time.h>
 #include <cstdio>
 
+static char current_pro_dir[128];             // current directory this program stay, download group should provide
 
 
 //------------ declare public area for data downloaded from canvas--------
@@ -15,8 +16,8 @@
                                                     // information, assignment information, file(assignment itself) information
 typedef struct{
 
-    const char *current_pro_dir;                    // current directory this program stay, download group should
-                                                    // provide
+
+
 
     #ifndef _STU_INFO
 
@@ -98,6 +99,7 @@ const char *F_Dir_New, const char *current_dir);  // reload your weapon ready to
  * file_zip_valid indicates whether submitted zipfile can be unzipped, 1 is valid;
  * F_Dir_Origin is where download group put submitted assignment;
  * current_dir is where progame stay;
+ * the function of this conductor is like reloading your weapon and prepare to shoot;
 */
 
     Assignment_Unzip(int Stu_Index, int file_name_valid,
