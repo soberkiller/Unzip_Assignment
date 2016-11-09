@@ -76,7 +76,8 @@ int Assignment_Unzip::A_Check_file(int &f_c_flag, int &f_q_flag,
         p = strrchr(m_F_name_Origin[i], '.');
         if(!strcmp(p,File_Zip)){
             strcat(temp_Dir, m_F_Dir_Origin);
-            strcat(temp_Dir, m_F_name_Origin[i]);
+            strcat(temp_Dir, m_F_name_Origin[i]);       // combine filename with directory and ready to unzip
+            // whether zipfile can be unziped
             /* --- get into zip file and see whether these files are desired
              * QStringList getFileList(QString fileCompressed)
              */

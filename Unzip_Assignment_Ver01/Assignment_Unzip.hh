@@ -49,7 +49,7 @@ typedef struct{
                                                            // name if download group do not tell
         const char  *File_dir_Origin, *File_dir_N;         // position that file is located and the position where
                                                            // the copies of files and unzip files are?? we are going to store these new files under the same level where orignal files are sitting
-        const char *File_Extname_N;
+        const char *File_Extname_N;                 // give something if u dont do anything
 
         int file_number;                            // how many files student submit
         int file_dir_err;                           // tell us whether certain file has vaild path
