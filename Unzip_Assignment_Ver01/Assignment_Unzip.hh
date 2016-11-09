@@ -7,7 +7,12 @@
 #include <time.h>
 #include <cstdio>
 
+
+
+
 static char current_pro_dir[256];             // current directory this program stay, download group should provide
+static int Get_dir_OK;                        // 0 fail to get directory of pro
+
 
 
 //------------ declare public area for data downloaded from canvas--------
@@ -39,15 +44,14 @@ typedef struct{
     #ifndef _FILE_INFO
 
     typedef struct {
-        const char *File_Orname, *File_Extname;            // file's name and extra name; the Orname may be full
+        const char **File_name_Origin;               // files's name
+        const char *File_Ext_name;                  // file's extra name
                                                            // name if download group do not tell
         const char  *File_dir_Origin, *File_dir_N;         // position that file is located and the position where
                                                            // the copies of files and unzip files are?? we are going to store these new files under the same level where orignal files are sitting
         const char *File_Extname_N;
-        int Q_flag;                                 // file name qualified flag, by this, we'll know whose file
-                                                    // follows rule. it has more priority than C_flag;
-        int C_flag;                                 // complie qualified flag that represents wether this file is
-                                                    // able to complie
+
+        int file_number;                            // how many files student submit
         int file_dir_err;                           // tell us whether certain file has vaild path
         int file_name_err;                          // tell us whether certain file has vaild name
         int file_name_valid;                        // whether file name is valid
@@ -69,6 +73,7 @@ typedef struct{
 
         const char *Assigment_Comment;                // grader's comment to a assignment
         const char *Assignment_Graph_Title;
+        const char *Assignment_Title;           //
     } Assignment_info;                          // all the things about assignment
     #define _ASSIGNMENT_INFO
     #endif
@@ -85,8 +90,8 @@ typedef struct{
 
 class Assignment_Unzip{
 private:
-    int m_Stu_Index, m_file_name_valid, m_file_zip_valid;
-    const char *m_F_Orname, *m_F_Exname, *m_F_Dir_Origin, *m_F_Dir_New;
+    int m_Stu_Index, m_file_name_valid, m_file_zip_valid, m_F_number;
+    const char **m_F_name_Origin, *m_F_Exname, *m_F_Dir_Origin, *m_F_Dir_New;
     const char *m_current_dir;
     double m_Stu_ID;
 public:                                         // there are two methods;
@@ -104,12 +109,17 @@ const char *F_Dir_New, const char *current_dir);  // reload your weapon ready to
 
     Assignment_Unzip(int Stu_Index, int file_name_valid,
                      int file_zip_valid, double Stu_ID,
-                     const char *F_Dir_Origin, const char *current_dir);
+                     const char *F_Dir_Origin, const char *current_dir
+                     ,const char **F_name_Origin, int F_number);
 
 
 
 
-    void A_Check_file(int &file_name_valid, int &m_file_zip_valid, const char *F_Dir_New);                              // check the file to see whether its name follows the rule and can or not be complied if file name is qualified
+    int A_Check_file(int &file_name_valid, int &m_file_zip_valid,
+                     const char *F_Dir_New);       // check the file to see whether
+                                                   // its name follows the rule and
+                                                   // can or not be complied if file
+                                                   // name is qualified
     void A_Send_mail(int f_c_flag, int f_q_flag, char const *s_mailaddress);      // notify student whose submitted assigment is not qualified
 };
 
