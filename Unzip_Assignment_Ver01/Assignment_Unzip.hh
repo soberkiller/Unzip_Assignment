@@ -7,7 +7,7 @@
 #include <time.h>
 #include <cstdio>
 
-static char current_pro_dir[128];             // current directory this program stay, download group should provide
+static char current_pro_dir[256];             // current directory this program stay, download group should provide
 
 
 //------------ declare public area for data downloaded from canvas--------

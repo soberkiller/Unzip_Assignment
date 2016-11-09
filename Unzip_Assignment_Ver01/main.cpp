@@ -4,6 +4,11 @@
 #include <string>
 #include <Assignment_Unzip.hh>
 #include <mach-o/dyld.h>
+#include <cstring>                       // for using strrchr()
+
+#ifdef WIN32
+#include "windows.h"                    // by using GetModuleFileName()
+#endif
 
 using namespace std;
 
@@ -47,15 +52,38 @@ int main(){
     delete[] stu;
 
     cout.precision(10);
-    cout << stu[13].S_info.Stu_Index;
-//-------------------------------------------------
+    cout << stu[13].S_info.Stu_Index << '\n';
+//--------------------------------------------------------------------
 // get current directory and store it in current_pro_dir
     uint32_t dir_buf_size = sizeof(current_pro_dir);
 
     if (_NSGetExecutablePath(current_pro_dir, &dir_buf_size) == 0)
+    {
+        cout << dir_buf_size << '\n';
+        char *p = strrchr(current_pro_dir, '/');
+#ifdef WIN32
+        char *p = strrchr(current_pro_dir, '\');
+#endif
+        *p = 0;
         printf("executable path is %s\n", current_pro_dir);
-    else
+        Get_dir_OK = 1;
+    }
+    else{
         printf("buffer too small; need size %u\n", dir_buf_size);
+        Get_dir_OK = 0;
+    }
+#ifdef WIN32
+    if(!GetModuleFileName(Null, current_pro_dir, 256)){
+        printf("executable path is %s\n", current_pro_dir);
+        Get_dir_OK = 1;
+    }
+    else{
+        printf("fail to get path information!\n");
+        Get_dir_OK = 0;
+    }
+#endif
+// get current directory and store it in current_pro_dir
+//--------------------------------------------------------------------
 
    // for(int i=HOWMANY_STU-1; i>=0; i--){
     int i = 1;
@@ -63,7 +91,7 @@ int main(){
                            stu[i].F_info.file_zip_valid, stu[i].S_info.Stu_ID,
                            stu[i].F_info.File_dir_Origin, current_pro_dir);  // reload your weapon ready to shoot
 
-        a.A_Check_file(stu[i].F_info.Q_flag, stu[i].F_info.C_flag, stu[i].F_info.File_Extname);       // figure out whether file student submit follow name rule or can be complied
+//        a.A_Check_file(stu[i].F_info.Q_flag, stu[i].F_info.C_flag, stu[i].F_info.File_Extname);       // figure out whether file student submit follow name rule or can be complied
 
         if(stu[i].F_info.C_flag && stu[i].F_info.Q_flag){                  // if file's name does not follow rule or can't be complied, send mail;
             a.A_Send_mail(stu[i].F_info.C_flag, stu[i].F_info.Q_flag, stu[i].S_info.Stu_Mail_Addr);
