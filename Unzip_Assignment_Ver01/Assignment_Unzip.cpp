@@ -29,7 +29,8 @@ Assignment_Unzip::Assignment_Unzip(int Stu_Index, int file_name_valid,
     m_F_Dir_Origin = F_Dir_Origin;
     m_current_dir = current_dir;
     m_F_number = F_number;
-    *m_F_name_Origin = *F_name_Origin;
+    for(int i = 256; i >= 0; i--)
+        m_F_name_Origin[i] = F_name_Origin[i];
 
 }
 
@@ -80,14 +81,16 @@ int Assignment_Unzip::A_Check_file(int &f_c_flag, int &f_q_flag,
 /*---------------- unzip files from a zipfile ---------------------*/
 // reach to this step means files in current directory follow the rules
     char *temp_Dir;
-    for(int i = m_F_number-1; i>=0;i--)
+    *temp_Dir = '\0';
+    for(int i = 0; i<m_F_number;i++)
     {
         p = strrchr(m_F_name_Origin[i], '.');
         if(!strcmp(p,File_Zip)){
             strcat(temp_Dir, m_F_Dir_Origin);
+
             strcat(temp_Dir, m_F_name_Origin[i]);       // combine filename with directory and ready to unzip
             int count = 0;                              // number of file in a zipfile
-            char** file_name_zip = NULL;
+            const char *file_name_zip[100];
             char *s;
             temp_Dir = "/Users/fangmingzhao/course/Project/unziptest.zip";
             QStringList F_List = JlCompress::getFileList(temp_Dir);
@@ -95,9 +98,9 @@ int Assignment_Unzip::A_Check_file(int &f_c_flag, int &f_q_flag,
                     QByteArray p1 = item.toLatin1();
                     file_name_zip[count] = p1.data();
 
-                    count++;
+                    count++;                        // by this step, we will how many files in a zip
             }
-            count++;                                     // by this step, we will how many files in a zip
+
 
             // do they follow the name rules???
             // yes set f_q_flag 1, no f_q_flag 0;
