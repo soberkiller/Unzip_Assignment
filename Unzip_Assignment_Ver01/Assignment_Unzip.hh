@@ -116,7 +116,7 @@ const char *F_Dir_New, const char *current_dir);  // reload your weapon ready to
 
 
 
-    int A_Check_file(int &file_name_valid, int &m_file_zip_valid,
+    int A_Check_file(int &f_c_flag, int &f_q_flag,
                      const char *F_Dir_New);       // check the file to see whether
                                                    // its name follows the rule and
                                                    // can or not be complied if file

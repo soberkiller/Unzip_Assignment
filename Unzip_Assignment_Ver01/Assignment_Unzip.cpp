@@ -110,10 +110,10 @@ int Assignment_Unzip::A_Check_file(int &f_c_flag, int &f_q_flag,
 
             if(f_c_flag){
                 QStringList F_List = JlCompress::extractDir(temp_Dir, m_F_Dir_New);
-                if(!F_List){
-                    f_q_flag = 0;
-                    return 0;
-                }
+//                if(!F_List){
+//                    f_q_flag = 0;
+//                    return 0;
+//                }
                 f_q_flag = 1;
             }
             else{
