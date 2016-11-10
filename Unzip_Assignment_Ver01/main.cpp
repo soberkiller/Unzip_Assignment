@@ -34,8 +34,8 @@ int main(){
 
         stu[i].F_info.File_dir_Origin = "/Users/fangmingzhao/course/Project/build-Unzip_Assignment_Ver01-Desktop_Qt_5_7_0_clang_64bit-Debug/59380_0";         // given by download
 
-        stu[i].F_info.file_name_valid = 0;       // initialize file name ok flag;
-        stu[i].F_info.file_zip_valid = 0;         // initialize zip ok flag
+        stu[i].F_info.file_name_valid = -1;       // initialize file name ok flag;
+        stu[i].F_info.file_zip_valid = -1;         // initialize zip ok flag
 /*      strcat() combine two string together
         we set different directories for every student (this work can be
         done by download group)
