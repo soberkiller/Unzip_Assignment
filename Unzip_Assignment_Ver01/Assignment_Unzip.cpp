@@ -21,7 +21,7 @@ Assignment_Unzip::Assignment_Unzip(int Stu_Index, int file_name_valid,
                                    const char *F_Dir_Origin, const char *current_dir, const char *F_name_Origin[],
                                    int F_number)
                                     {
-/*----------------  ---------------------*/
+/*---------------- reload weapon ready to shoot ---------------------*/
     m_Stu_Index = Stu_Index;
     m_file_name_valid = file_name_valid;
     m_file_zip_valid = file_zip_valid;
@@ -33,26 +33,14 @@ Assignment_Unzip::Assignment_Unzip(int Stu_Index, int file_name_valid,
         m_F_name_Origin[i] = F_name_Origin[i];
 
 }
+/*------------------------- Check the files ----------------------------
+* if they follow the rule, set corresponding flag to let others know
+* if there is zipfile existed, unzip it after check its inside content
+*
+-----------------------------------------------------------------------*/
 
 int Assignment_Unzip::A_Check_file(int &f_c_flag, int &f_q_flag,
                                     const char *F_Dir_New){
-/*--------------- reference -------------------------------------------
-    // F_Exname = "hehe";
-    // cout << F_Exname;
-//   const char *zipfilename=NULL;
-
-//    zipfilename = m_F_Orname;               // pass file name
-
-
-        if(JlCompress::compressDir(zipfilename, m_F_Dir_Old))
-        {
-            qDebug() << "Created:" << zipfilename;
-
-        }
-        else
-        {
-            qDebug() << "Could not created:" << zipfilename;
-        }
 /*---------------- whether file name follows rule ---------------------*/
     const char *File_CPP = ".cpp";
     const char *File_CC = ".cc";
@@ -78,7 +66,19 @@ int Assignment_Unzip::A_Check_file(int &f_c_flag, int &f_q_flag,
             return 0;
         }
     }
-/*---------------- unzip files from a zipfile ---------------------*/
+/*---------------- unzip files from a zipfile ---------------------
+* 1. to determine we do have zipfile;
+* 2. if we do, what's inside, who are they, how many are they, if we
+*    do not have, it is no neccessary to run unzip. Instead deal with
+*    next student;
+* 3. we have their identification and the number of how many. we have
+*    to check them to see whether they follow name rule. if they do,
+*    unzip this zipfile let me come out. However, we go to deal with
+*    next student if zipfile contain invalid name file;
+* 4. unzip file, if fail to do that, set stu[i].F_info.file_zip_valid
+*    (f_c_flag) 0 indicating this zipfile is broken;
+* 5. update data table;
+---------------------------------------------------------------------*/
 // reach to this step means files in current directory follow the rules
     char *temp_Dir;
     *temp_Dir = '\0';
@@ -96,40 +96,33 @@ int Assignment_Unzip::A_Check_file(int &f_c_flag, int &f_q_flag,
             QStringList F_List = JlCompress::getFileList(temp_Dir);
             foreach (QString item, F_List) {
                     QByteArray p1 = item.toLatin1();
-                    file_name_zip[count] = p1.data();
-
+                    if(!strcmp(p1.data(),File_CC) or !strcmp(p1.data(),File_CPP) or !strcmp(p1.data(),File_HH)
+                        or !strcmp(p1.data(),File_Zip)){
+                    f_c_flag = 1;                   // at least this file follows the rule
                     count++;                        // by this step, we will how many files in a zip
+                }else{
+                        f_c_flag = 0;
+                        count = -1;
+                        return 0;
+                    }
+
             }
 
-
-            // do they follow the name rules???
-            // yes set f_q_flag 1, no f_q_flag 0;
-
-            // whether zipfile can be unziped
-            /* --- get into zip file and see whether these files are desired
-             * QStringList getFileList(QString fileCompressed)
-             */
-            if(!f_q_flag){
+            if(f_c_flag){
                 QStringList F_List = JlCompress::extractDir(temp_Dir, m_F_Dir_New);
+                if(!F_List){
+                    f_q_flag = 0;
+                    return 0;
+                }
+                f_q_flag = 1;
             }
             else{
                 return 0;
             }
         }
 
-
-
-        // put these files into a certain directory, under central directory
     }
-
-/*---------------- check these unzip files again, to see whether they follow rules ---------------------*/
-
 /*---------------- reserved for future ---------------------*/
-
-    for(int i = m_F_number-1; i>=0;i--){
-
-        QStringList F_List = JlCompress::extractDir(m_F_Dir_Origin, m_F_Dir_New);      // here is suppose to have a flag to indicate whether unzipping a file is finished or ok.
-    }
 }
 
 void Assignment_Unzip::A_Send_mail(int f_c_flag, int f_q_flag, const char *s_mailaddress){
