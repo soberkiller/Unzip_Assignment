@@ -5,17 +5,9 @@
 #include <cstdio>
 
 
+
 using namespace std;
-/*
- * int m_Stu_Index, m_file_name_valid, m_file_zip_valid;
-const char *m_F_Orname, *m_F_Exname, *m_F_Dir_Origin, *m_F_Dir_New;
-const char *m_current_dir;
-double m_Stu_ID;
-*/
-//Assignment_Unzip::Assignment_Unzip(int Stu_Index, const char *F_Orname, const char *F_Exname, const char *F_Dir_Origin, const char *F_Dir_New, const char *current_dir): m_Stu_Index(Stu_Index), m_F_Orname(F_Orname), m_F_Exname(F_Exname), m_F_Dir_Origin(F_Dir_Origin), m_F_Dir_New(F_Dir_New), m_current_dir(current_dir){
-/*----------------  ---------------------*/
-
-
+/*---------------- reload weapon ready to shoot ---------------------*/
 Assignment_Unzip::Assignment_Unzip(int Stu_Index, int file_name_valid,
                                    int file_zip_valid, double Stu_ID,
                                    const char *F_Dir_Origin, const char *current_dir, const char *F_name_Origin[],
@@ -34,8 +26,8 @@ Assignment_Unzip::Assignment_Unzip(int Stu_Index, int file_name_valid,
 
 }
 /*------------------------- Check the files ----------------------------
-* if they follow the rule, set corresponding flag to let others know
-* if there is zipfile existed, unzip it after check its inside content
+* if flies follow the rule, set corresponding flag in order to let others
+* know if there is zipfile existed, unzip it after check its inside content
 *
 -----------------------------------------------------------------------*/
 
@@ -92,7 +84,7 @@ int Assignment_Unzip::A_Check_file(int &f_c_flag, int &f_q_flag,
             int count = 0;                              // number of file in a zipfile
             const char *file_name_zip[100];
             char *s;
-            temp_Dir = "/Users/fangmingzhao/course/Project/unziptest.zip";
+            temp_Dir = "/Users/fangmingzhao/course/Project/unziptest.zip";  // for testing
             QStringList F_List = JlCompress::getFileList(temp_Dir);
             foreach (QString item, F_List) {
                     QByteArray p1 = item.toLatin1();
@@ -110,10 +102,10 @@ int Assignment_Unzip::A_Check_file(int &f_c_flag, int &f_q_flag,
 
             if(f_c_flag){
                 QStringList F_List = JlCompress::extractDir(temp_Dir, m_F_Dir_New);
-//                if(!F_List){
-//                    f_q_flag = 0;
-//                    return 0;
-//                }
+                //if(F_List == NULL){               // still working on this part
+                 //   f_q_flag = 0;
+                 //   return 0;
+                //}
                 f_q_flag = 1;
             }
             else{
@@ -124,7 +116,7 @@ int Assignment_Unzip::A_Check_file(int &f_c_flag, int &f_q_flag,
     }
 /*---------------- reserved for future ---------------------*/
 }
-
+/*---------------- send mail to student whose submitted file are not valid -------------------*/
 void Assignment_Unzip::A_Send_mail(int f_c_flag, int f_q_flag, const char *s_mailaddress){
 
 }
