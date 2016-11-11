@@ -14,8 +14,8 @@
  * tool: C++
  * group: C/zip file rules
  * group member: Zheao Ma, He Song, Yuan Zhou
- *
- * program ver: v0.7
+ * program name: Unzip_Assignment_Ver01
+ * program ver: v0.72
  *
  ***********************************************************/
 

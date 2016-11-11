@@ -7,10 +7,20 @@
 #include <time.h>
 #include <cstdio>
 
+/**********************************************************
+ * author : Fangming Zhao
+ * working OS: MacOs Sierra
+ * IDE: Qt Creator 4.1.0
+ * tool: C++
+ * group: C/zip file rules
+ * group member: Zheao Ma, He Song, Yuan Zhou
+ *
+ * program ver: v0.7
+ *
+ ***********************************************************/
 
 
-
-static char current_pro_dir[256];             // current directory this program stay, download group should provide
+static char current_pro_dir[256];             // current directory this program stay
 static int Get_dir_OK;                        // 0 fail to get directory of pro
 
 
