@@ -29,7 +29,7 @@ int main(){
 /*------------------- the following content is made for testing whole program ---------------------*/
     int HOWMANY_STU = 10;               // for simulating
 
-    Course_info *stu=new Course_info[HOWMANY_STU];      // HOWMANY_STU is dyn
+    Student *stu=new Student[HOWMANY_STU];      // HOWMANY_STU is dyn
 
     for(int i=HOWMANY_STU-1; i>=0; i--){
 
