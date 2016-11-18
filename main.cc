@@ -49,22 +49,21 @@ int main(){
  *       b.push_back(i);
  *   }
  *********************************************/
-    HomeWork *HW = new HomeWork[HOWMANY_HW];        // it is really hard to monitor array
+ /*   HomeWork *HW = new HomeWork[HOWMANY_HW];        // it is really hard to monitor array
 
     for (int i=0; i < HOWMANY_HW; i++){
         HW[i].rule_num = 2;
-//        HW[i].File_name_rule_Main = new const char*[2];       // keep them for referring
-//        HW[i].File_name_rule_Extra = new const char*[2];
+        HW[i].File_name_rule_Main = new const char*[2];
+        HW[i].File_name_rule_Extra = new const char*[2];
 
         for(int j = 0; j < HW[i].rule_num; j++){
             HW[i].File_name_rule_Main[j] = rule_Main_test[j];
             HW[i].File_name_rule_Extra[j]= rule_Extra_test[j];
   //          cout << HW[i].File_name_rule_Main[j] << '\n';
         }
-//        delete[] HW[i].File_name_rule_Extra;
-//        delete[] HW[i].File_name_rule_Main;
+
     }
-    delete[] HW;
+    delete[] HW;*/
     int HOWMANY_STU = 10;               // for simulating;
 
     Student *stu=new Student[HOWMANY_STU];      // HOWMANY_STU is dyn
@@ -154,14 +153,14 @@ int main(){
         Assignment_Unzip a(stu[i].S_info.Stu_Index, stu[i].F_info.file_name_valid,
                            stu[i].F_info.file_zip_valid, stu[i].S_info.Stu_ID,
                            stu[i].F_info.File_dir_Origin, current_pro_dir,
-                           stu[i].F_info.File_name_Origin, stu[i].F_info.file_number,HW[i].rule_num
-                           ,HW[i].File_name_rule_Main, HW[i].File_name_rule_Extra);  // reload your weapon ready to shoot
-        a.test();
+                           stu[i].F_info.File_name_Origin, stu[i].F_info.file_number);//,HW[i].rule_num);
+                           //,HW[i].File_name_rule_Main, HW[i].File_name_rule_Extra);  // reload your weapon ready to shoot
+/*        //a.test();
         a.A_Check_file(stu[i].F_info.file_name_valid, stu[i].F_info.file_zip_valid,
                        stu[i].F_info.File_dir_N);       // figure out whether file student submit
                                                         // follow name rule or can be unzipped
 
-/*        if(stu[i].F_info.file_zip_valid && stu[i].F_info.file_name_valid){    // if file's name does not follow
+        if(stu[i].F_info.file_zip_valid && stu[i].F_info.file_name_valid){    // if file's name does not follow
                                                                               // rule or can't be Unzipped, send
                                                                               // them mail;
         a.A_Send_mail(stu[i].F_info.file_zip_valid, stu[i].F_info.file_name_valid, stu[i].S_info.Stu_Mail_Addr);
