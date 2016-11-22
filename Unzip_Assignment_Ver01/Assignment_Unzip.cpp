@@ -46,16 +46,13 @@ Assignment_Unzip::Assignment_Unzip(int Stu_Index, int file_name_valid,
 * written.
 -----------------------------------------------------------------------*/
 
-int Assignment_Unzip::A_Check_file(int &f_c_flag, int &f_q_flag,
-                                    const char *F_Dir_New){
+int Assignment_Unzip::A_Check_file(int &f_c_flag, int &f_q_flag, const char *file_name_qualified[]){
 /*---------------- whether file name follows rule ---------------------*/
-    const char *file_name_in_zip[100];                                          // the name of files in a zipfile
-    int file_in_Index = 0, file_qname_index = 0, loop_count1, loop_count2 =0;      // for files in zipfile
-    char *p, *q;
-    q = "*";
+    int file_qname_index = 0, loop_count1, loop_count2 = 0;      // for files in zipfile
+    int file_inzip_num = 0;                              // number of file in a zipfile
+    const char *p, *q = "*";
 
-    char *full_name = (char*)malloc(strlen(*m_file_name_rule_M)+
-                                    strlen(*m_file_name_rule_E)+1);
+    char *full_name;
 
     for(int i = 0; i< m_F_number;i++)                     // m_F_number is how many file student submitted
     {                                                     // m_F_name_Origin[] is their names
@@ -64,6 +61,8 @@ int Assignment_Unzip::A_Check_file(int &f_c_flag, int &f_q_flag,
         for(int j=0; j<m_file_rule_num; j++){
             if(strcmp(m_file_name_rule_M[j],q)){                   // one certain file name, including its extra
                                                                    // name must be the same to name rule descript
+                full_name = (char*)malloc(strlen(m_file_name_rule_M[j])+strlen(m_file_name_rule_E[j])+1);
+
                 *full_name = NULL;
                 strcpy(full_name, m_file_name_rule_M[j]);
                 strcat(full_name, m_file_name_rule_E[j]);
@@ -78,16 +77,19 @@ int Assignment_Unzip::A_Check_file(int &f_c_flag, int &f_q_flag,
                     loop_count2++;
                 }
             }
-            if(loop_count1 < m_file_rule_num){
-                m_file_name_qualified[file_qname_index] = (char*)malloc(strlen(m_F_name_Origin[i])+1);
-                m_file_name_qualified[file_qname_index] = m_F_name_Origin[i];
-                file_qname_index++;
-            }
-
+        }
+        if(loop_count1 < m_file_rule_num && strcmp(p, ".zip") !=0){         // store file name who is qualified, except
+                                                                            // zipfile. Because automation group can do
+                                                                            // nothing to zipfiles before these zipfiles
+                                                                            // are unzipped
+            file_name_qualified[file_qname_index] = (char*)malloc(strlen(m_F_name_Origin[i])+1);    // it is ok?
+            file_name_qualified[file_qname_index] = m_F_name_Origin[i];
+            cout << file_name_qualified[file_qname_index];
+            file_qname_index++;
         }
 
     }
- /*-------- reserved for passing reference like m_file_name_qualified and file_qname_index --------*/
+ /*-------- reserved for passing reference, m_file_name_qualified and file_qname_index --------*/
     if(loop_count2 == m_F_number*2){
         f_c_flag = 0;f_q_flag = 0;                      // if loop_count2 equals to 2 times number of files each
                                                         // student submit, these files are not desired ones.
@@ -95,42 +97,41 @@ int Assignment_Unzip::A_Check_file(int &f_c_flag, int &f_q_flag,
     }
     f_c_flag = 1;f_q_flag = -1;
 /*---------------- unzip files from a zipfile ---------------------
-* 1. to determine we do have zipfile;
+* 1. determine we do have zipfile;
 * 2. if we do, what's inside, who are they, how many are they; if we
-*    do not have one, it is no neccessary to run unzip. Instead, deal
-*    with next student;
-* 3. we have their names and the number of how many. we have
+*    do not have one, it is unneccessary to run unzip. Instead, go
+*    to next student;
+* 3. we have files names and the number of how many. we have
 *    to check them, to see whether they follow name rule. if they do,
-*    unzip this zipfile. However, we go to deal with next student if
+*    unzip this zipfile. However, we go to next student if
 *    zipfile contains file whose name is invalid;
 * 4. unzip file, if fail to do that, set stu[i].F_info.file_zip_valid
 *    (f_c_flag) 0 indicating this zipfile is broken;
 * 5. update data table;
 ---------------------------------------------------------------------*/
 // reach to this step means files in current directory follow the rules
-    char *temp_Dir = (char*)malloc(strlen(m_F_Dir_Origin)+strlen(*m_F_name_Origin)+1);  // allocate memory
-
+    loop_count2 = 0;
+    char *temp_Dir;
     for(int i = 0; i< m_F_number;i++)                   // check every file
     {
         p = strrchr(m_F_name_Origin[i], '.');
         if(!strcmp(p,".zip")){
+            temp_Dir = (char*)malloc(strlen(m_F_Dir_Origin)+strlen(m_F_name_Origin[i])+1);  // allocate memory
             *temp_Dir = NULL;
             strcat(temp_Dir, m_F_Dir_Origin);
             strcat(temp_Dir, m_F_name_Origin[i]);       // combine filename with directory and ready to unzip
-            int count = 0;                              // number of file in a zipfile
-
             temp_Dir = "/Users/fangmingzhao/course/Project/unziptest.zip";  // for testing
             QStringList F_List = JlCompress::getFileList(temp_Dir);
             if(F_List.count() == 0){                  // nothing in zipfile or cant be unzipped
                     f_q_flag = 0;                     // meaning something wrong with zipfile
-                    count = -1;
+                    file_inzip_num = -1;
                     return 0;
             }
-            count = F_List.count();                     // how many files in zipfile
+            file_inzip_num = F_List.count();                     // how many files in zipfile
             foreach (QString item, F_List) {
                 loop_count1 = 0;
                 QByteArray p1 = item.toLatin1();
-                for(int i=0; i<m_file_rule_num; i++){
+                for(int i=0; i<m_file_rule_num; i++){                      // number of rules
                     if(strcmp(m_file_name_rule_M[i],q)){                   // one certain file name, including its extra
                                                                            // name must be the same to name rule descript
                         *full_name = NULL;
@@ -147,46 +148,32 @@ int Assignment_Unzip::A_Check_file(int &f_c_flag, int &f_q_flag,
                             loop_count2++;
                         }
                     }
-                    if(loop_count1 < m_file_rule_num){
-                        m_file_name_qualified[file_qname_index] = (char*)malloc(strlen(p1.data())+1);
-                        m_file_name_qualified[file_qname_index] = p1.data();
-                        file_qname_index++;
-                    }
 
                 }
-                  /*QByteArray p1 = item.toLatin1();
-                    if(!strcmp(p1.data(),File_CC) or !strcmp(p1.data(),File_CPP) or !strcmp(p1.data(),File_HH)
-                        or !strcmp(p1.data(),File_Zip)){
-                        file_name_in_zip[File_in_Index] = p1.data();
-                        m_file_name_valid = 1;          // at least this file follows the rule
-
-                    }                                   // by this step, we will how many files in a zip
-                else{
-                        m_file_name_valid = 0;
-                        f_c_flag = m_file_name_valid;
-                        m_file_zip_valid = 0;
-                        f_q_flag = m_file_zip_valid;
-                        count = -1;                     // it doesnt make sense to count items in a zipfile if
-                                                        // no valid file in;
-                        return 0;
-                    }*/
-
+                if(loop_count1 < m_file_rule_num){
+                    file_name_qualified[file_qname_index] = (char*)malloc(strlen(p1.data())+1);
+                    file_name_qualified[file_qname_index] = p1.data();
+                    file_qname_index++;
+                }
+            }
+            if(loop_count2 == file_inzip_num*2){
+                f_c_flag = 0;f_q_flag = 1;                      // if loop_count2 equals to 2 times number of files each
+                                                                // student submit, these files are not desired ones though
+                                                                // zipfile can be unzipped
+                return 0;
             }
             QStringList F_Unzip = JlCompress::extractDir(temp_Dir, m_F_Dir_New);    // unzip file
             if(F_Unzip.count() == 0){                  // nothing in zipfile or cant be unzipped
-                    m_file_zip_valid = 0;              // meaning something wrong with zipfile
+                    f_q_flag = 0;                      // meaning something wrong with zipfile
                     return 0;
                 }else{
-                    m_file_zip_valid = 1;
+                    f_q_flag = 1;
                     return 1;
             }
-
-
         }
 
     }
-    f_c_flag = m_file_name_valid;
-    f_q_flag = m_file_zip_valid;
+
     return 1;
 /*---------------- reserved for future ---------------------*/
 }
@@ -196,8 +183,11 @@ void Assignment_Unzip::test(){
 }
 
 /*---------------- send mail to student whose submitted file are not valid -------------------*/
-void Assignment_Unzip::A_Send_mail(int f_c_flag, int f_q_flag, const char *s_mailaddress){
-
+void Assignment_Unzip::A_Send_mail(int f_c_flag, int f_q_flag){
+    if(f_c_flag)
+        f_c_flag = 1;
+    if(f_q_flag)
+        f_q_flag = 1;
 }
 
 #ifdef WIN32

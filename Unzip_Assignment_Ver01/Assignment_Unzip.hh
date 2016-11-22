@@ -6,6 +6,7 @@
 #include <unzip.h>
 #include <time.h>
 #include <cstdio>
+#include <vector>
 
 /**********************************************************
  * author : Fangming Zhao
@@ -15,7 +16,7 @@
  * group: C/zip file rules
  * group member: Zheao Ma, He Song, Yuan Zhou
  *
- * program ver: v0.76
+ * program ver: v0.94
  *
  ***********************************************************/
 
@@ -43,8 +44,6 @@ typedef struct{
         int Stu_Assigment_Grade_Max;                // the maximum grade that students can get
         double Stu_ID;                              // the ID number of student
         const char *Stu_Name;                             // student's name which has to be english
-        const char *Stu_Mail_Addr;                        // student's email address
-
 
     }Student_info;                                     // stu_info stores student information
 
@@ -60,11 +59,13 @@ typedef struct{
                                                            // name if download group do not tell
 
         const char  *File_dir_Origin, *File_dir_N;         // position that file is located and the position where
+        std::vector<std::string> File_dir_N_new;
                                                            // the copies of files and unzip files are?? we are going to store these new files under the same level where orignal files are sitting
         const char *File_Extname_N;                 // give something if u dont do anything
         const char *file_unzip_dir;                 // directory that unzipped files put into; the name is
                                                     // combination of Stu_ID and Stu_Index
         const char *file_name_inzip[20];            // file names in a zipfile;
+        const char *file_name_qualified[30];
 
         int file_number;                            // how many files student submit
         int file_dir_err;                           // tell us whether certain file has vaild path
@@ -118,7 +119,7 @@ struct HomeWork{                            // Here is my idear, suppose there i
                                             // must be consisted with ".cpp" no matter what's inside of File_name_
                                             // rule_Main[1];
 
-    const char *File_name_rule_Main[15];        // main name of assignment grader wants; come from outside and given by
+    const char *File_name_rule_Main[15];    // main name of assignment grader wants; come from outside and given by
                                             // grader;
     const char *File_name_rule_Extra[15];       // main name of assignment grader wants; come from outside and given by
                                             // grader;
@@ -139,7 +140,6 @@ private:
     const char *m_current_dir;
     const char *m_file_name_rule_M[15];
     const char *m_file_name_rule_E[15];
-    const char *m_file_name_qualified[20];
     double m_Stu_ID;
 public:                                         // there are two methods;
 /* **********************************************************************************
@@ -161,13 +161,12 @@ public:                                         // there are two methods;
 
 
 /*------------------ method 1 check file and unzip them if they are valid ----------------*/
-    int A_Check_file(int &f_c_flag, int &f_q_flag,
-                     const char *F_Dir_New);       // check the file to see whether
+    int A_Check_file(int &f_c_flag, int &f_q_flag, const char *file_name_qualified[]);       // check the file to see whether
                                                    // its name follows the rule and
                                                    // can or not be complied if file
                                                    // name is qualified
 /*------------------ method 2 send mail to student if their assignment are invalid ----------------*/
-    void A_Send_mail(int f_c_flag, int f_q_flag, char const *s_mailaddress);
+    void A_Send_mail(int f_c_flag, int f_q_flag);
     void test();
 
 };

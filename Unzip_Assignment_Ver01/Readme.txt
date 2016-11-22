@@ -1,3 +1,12 @@
+/**************** Fangming Zhao 11/21/2016 ****************
+ * object: Assignment_Unzip.cpp; Assignment_Unzip; main.cc
+ * action: rewrite whole method Check_file() in Assignment_Unzip.
+ *         cpp; this time, I use two array variables to store
+ *         naming rule. Also creating a new data struct called
+ *         homework. Im planning to use class instead of data
+ *         struct in the next version. Maybe class is safer.
+ *
+ * program ver: v0.94
 /**************** Fangming Zhao 11/12/2016 ****************
  * object: Assignment_Unzip.cpp; Assignment_Unzip
  * action: add new lines after getFileList() for determining
@@ -6,7 +15,7 @@
  *         File_in_Index (line 45), file_unzip_dir and
  *         file_name_inzip[20] in data structure in Assignment
  *         _Unzip.
- *program ver: v0.75
+ * program ver: v0.75
 /**************** Fangming Zhao 11/11/2016 ****************
  * object: Assignment_Unzip.cpp; Assignment_Unzip.hh
  * action: [object: Assignment_Unzip.cpp]: add new lines
